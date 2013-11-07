@@ -14,6 +14,7 @@ then
   exit 1
 fi
 
+mkdir -p $2
 now="mergejob_$(date +"%m_%d_%Y__%H_%M_%S")"
 mkdir $now
 len=`wc -l $1 | awk '{print $1}'`
