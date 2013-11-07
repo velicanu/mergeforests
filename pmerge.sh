@@ -20,7 +20,7 @@ mkdir $now
 len=`wc -l $1 | awk '{print $1}'`
 filesperjob=$3
 njobs=$((len/filesperjob+1))
-echo $njobs
+
 cp merge.sh $now
 cp $1 $now
 
