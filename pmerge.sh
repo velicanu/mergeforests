@@ -36,6 +36,7 @@ g++ $NAME $(root-config --cflags --libs) -Werror -Wall -O2 -o "${NAME/%.C/}.exe"
 cp mergeForest.exe $now
 cat pmerge.condor | sed "s@log_flag@$now@g" | sed "s@user_flag@$USER@g" | sed "s@dir_flag@$PWD/$now@g" | sed "s@arg1@$1@g" | sed "s@arg2@$2@g" | sed "s@arg3@$3@g" | sed "s@njobs@$njobs@g" > $now/pmerge.condor
 
+cat $not/pmerge.condor
 echo condor_submit $now/pmerge.condor
 # cat $1 | head -n 23 | awk -v outdir=$2 -v nfiles=$3 'BEGIN{i=0;c=0;print "mkdir -p mergedTmp/"c}{i++}{if (i>nfiles) {print "root -b -q \"hiForestMerging/mergeForest.C+(\\\"mergedTmp/"c"/*.root\\\",\\\"mergedTmp/"c".root\\\")\"";print "mv mergedTmp/"c".root "outdir" ";c++;i=0;print "mkdir -p mergedTmp/"c}} {print "ln -s "$1,"mergedTmp/"c"/"}{sub(".*/","",$1)}'
 
