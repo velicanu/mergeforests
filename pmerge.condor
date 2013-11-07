@@ -1,0 +1,16 @@
+Universe     = vanilla
+Initialdir   = dir_flag
+Notification = Error
+Executable   = dir_flag/merge.sh
+Arguments    = $(Process) arg1 arg2 arg3
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/lllogs/log_flag-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/lllogs/log_flag-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/lllogs/log_flag-$(Process).log
+Rank         = Mips
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+transfer_input_files = arg1,mergeForest.exe
+
+Queue njobs
