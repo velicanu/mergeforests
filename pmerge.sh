@@ -29,7 +29,6 @@ cp $1 $now
    # local NAME=$1
    # g++ $NAME $(root-config --cflags --libs) -Werror -Wall -O2 -o "${NAME/%.C/}.exe"
 # }
-cp hiForestMerging/mergeForest.C .
 NAME="mergeForest.C"
 g++ $NAME $(root-config --cflags --libs) -Werror -Wall -O2 -o "${NAME/%.C/}.exe"
 # rootcompile hiForestMerging/mergeForest.C
