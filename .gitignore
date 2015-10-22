@@ -1,3 +1,4 @@
 # ignore files and folders created when running this
 mergejob_*
 *.txt
+.exe
