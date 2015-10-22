@@ -70,6 +70,7 @@ void mergeForest(TString fname = "/mnt/hadoop/cms/store/user/richard/pA_jet20Ski
       else if (nentries != ch[i]->GetEntries())
       {
 	std::cout << "ERROR: number of entries in this tree does not match." << std::endl;
+	std::cout << "First inconsistent file: " <<ch[i]->GetFile()->GetName()<<std::endl;
 	std::cout << "Exiting. Please check input." << std::endl;
 	return;
       }
