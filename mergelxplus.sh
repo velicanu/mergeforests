@@ -5,12 +5,15 @@ then
   exit 1
 fi
 
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/data/yjlee/lib
+
 # if we're given the LFN instead of a text file list create the txtfile list and ask to rerun
 if [ ! -f $1 ]
 then
-  eos ls $1 | awk -v inputpath=$1 '{print "'$inputpath'"$1}' > tmppath.txt
+  /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls $1 | awk -v inputpath=${1} '{print '"inputpath"'"/"$1}' > tmppath.txt
   echo Made tmppath.txt from lfn, rerun with it, looks like 
-  head -n2 tmpptath.txt
+  head -n2 tmppath.txt
   exit 1
 fi
 # if we're not given a unmerged-path , set a default
@@ -28,17 +31,23 @@ else
   filename=$4
 fi
 
+mkdir -p $unmergepath/
+mkdir -p $2/
+/afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select mkdir -p $3
 
+count=0
 # stage all the files locally
 for i in `cat $1`
 do
-  cmsStage $i $unmergepath
+  echo cmsStage $i $unmergepath/HiForest_${count}.root
+  cmsStage $i $unmergepath/HiForest_${count}.root
+  count=$((count+1))
 done
 
 # merge the files, using hadd if fast otherwise with mergescript
 if [ $5 -ne 1 ] 
 then
-
+  ./mergeForest.exe "$unmergepath/*.root" $2/$filename
 else
   hadd -f $2/$filename $unmergepath/*.root
 fi
@@ -49,6 +58,6 @@ cmsStage -f $2/$filename $3/$filename
 # email that jobs are done
 echo $2/$filename > mymail
 echo $3/$filename >> mymail
-maili -s "merged files are done" velicanu@mit.edu < mymail
+mail -s "merged files are done" velicanu@mit.edu < mymail
 rm mymail
 
