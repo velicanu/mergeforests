@@ -11,9 +11,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/data/yjlee/lib
 # if we're given the LFN instead of a text file list create the txtfile list and ask to rerun
 if [ ! -f $1 ]
 then
-  /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls $1 | awk -v inputpath=${1} '{print '"inputpath"'"/"$1}' > tmppath.txt
-  echo Made tmppath.txt from lfn, rerun with it, looks like 
-  head -n2 tmppath.txt
+  /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls $1 | awk -v inputpath=${1} '{print '"inputpath"'"/"$1}' > ${4}tmppath.txt
+  echo Made ${4}tmppath.txt from lfn, rerun with it, looks like 
+  head -n2 ${4}tmppath.txt
   exit 1
 fi
 # if we're not given a unmerged-path , set a default
