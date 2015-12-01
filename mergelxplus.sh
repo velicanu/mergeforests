@@ -19,7 +19,7 @@ fi
 # if we're not given a unmerged-path , set a default
 if [ -z "$7" ]
 then
-  unmergepath="/data/velicanu/forests/unmerged_$(date +"%m_%d_%Y__%H_%M_%S")"
+  unmergepath="/data/$USER/forests/unmerged_$(date +"%m_%d_%Y__%H_%M_%S")"
 else
   unmergepath=$7
 fi
@@ -58,6 +58,6 @@ cmsStage -f $2/$filename $3/$filename
 # email that jobs are done
 echo $2/$filename > mymail
 echo $3/$filename >> mymail
-mail -s "merged files are done" velicanu@mit.edu < mymail
+echo mail -s "merged files are done" $USER.mit.edu < mymail
 rm mymail
 
