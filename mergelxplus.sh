@@ -44,6 +44,11 @@ do
   count=$((count+1))
 done
 
+# delete empty (<1MB) forests which usually break the merging
+cd $unmergepath
+find . -type f -size -1048576c | xargs rm
+cd -
+
 # merge the files, using hadd if fast otherwise with mergescript
 if [ $5 -ne 1 ] 
 then
