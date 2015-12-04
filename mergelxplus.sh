@@ -6,6 +6,23 @@ then
 fi
 
 
+function checkfile {
+
+fullentries=`$unmergepath/getEntries.exe $1 | grep -v ": 0"` 
+bad=`for i in $fullentries ; do echo $i | grep -v : ; done  | sort | uniq | wc -l`
+
+if [ $bad -gt 1 ]
+then
+  echo removing $1
+  echo  $fullentries
+  rm $1 
+fi
+
+}
+
+
+
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/data/yjlee/lib
 
 # if we're given the LFN instead of a text file list create the txtfile list and ask to rerun
@@ -36,18 +53,26 @@ mkdir -p $2/
 /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select mkdir -p $3
 
 count=0
-# stage all the files locally
+cp ~/git/mergeforests/getEntries.exe $unmergepath/
+# stage all the files locally, delete any that have inconsistent entries
 for i in `cat $1`
 do
   echo cmsStage $i $unmergepath/HiForest_${count}.root
   cmsStage $i $unmergepath/HiForest_${count}.root
+  wait
+  checkfile $unmergepath/HiForest_${count}.root &
   count=$((count+1))
 done
+
+wait
 
 # delete empty (<1MB) forests which usually break the merging
 cd $unmergepath
 find . -type f -size -1048576c | xargs rm
 cd -
+
+
+rm $unmergepath/getEntries.exe
 
 # merge the files, using hadd if fast otherwise with mergescript
 if [ $5 -ne 1 ] 

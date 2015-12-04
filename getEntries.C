@@ -9,16 +9,16 @@
 
 int getEntries(TString fname = "", int onetree = 0)
 {
-  TFile *testFile = TFile::Open(fname);
-  TList *topKeyList = testFile->GetListOfKeys();
+  TFile *_file0 = TFile::Open(fname);
+  TList *topKeyList = _file0->GetListOfKeys();
 
   std::vector<TString> trees;
-  std::vector<TTree*> treePointers;
   std::vector<TString> dir;
+  std::vector<Long64_t> nentries;
 
   for(int i = 0; i < topKeyList->GetEntries(); ++i)
   {
-    TDirectoryFile *dFile = (TDirectoryFile*)testFile->Get(topKeyList->At(i)->GetName());
+    TDirectoryFile *dFile = (TDirectoryFile*)_file0->Get(topKeyList->At(i)->GetName());
     if(strcmp(dFile->ClassName(), "TDirectoryFile") != 0) continue;
     
     TList *bottomKeyList = dFile->GetListOfKeys();
@@ -29,9 +29,9 @@ int getEntries(TString fname = "", int onetree = 0)
       treeName += "/";
       treeName += bottomKeyList->At(j)->GetName();
 
-      TTree* tree = (TTree*)testFile->Get(treeName);
-      treePointers.push_back(tree);
+      TTree* tree = (TTree*)_file0->Get(treeName);
       if(strcmp(tree->ClassName(), "TTree") != 0 && strcmp(tree->ClassName(), "TNtuple") != 0) continue;
+      nentries.push_back(tree->GetEntries());
 
       trees.push_back(treeName);
       dir.push_back(dFile->GetName());
@@ -44,11 +44,10 @@ int getEntries(TString fname = "", int onetree = 0)
   // Now use the list of tree names to make a new root file, filling
   // it with the trees from 'fname'.
   const int Ntrees = trees.size();
-
   for(int i = 0; i < Ntrees; ++i){
-    std::cout<<trees[i]<<": "<<treePointers[i]->GetEntries()<<std::endl;
+    std::cout<<trees[i]<<": "<<nentries[i]<<std::endl;
   }
-  testFile->Close();
+  _file0->Close();
   return 1;
 }
 
