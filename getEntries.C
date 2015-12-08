@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 {
   if((argc != 2) && (argc != 3))
   {
-    std::cout << "Usage: mergeForest <input_collection> <output_file>" << std::endl;
+    std::cout << "Usage: getEntries.exe <inputFile> [do_only_first_tree]" << std::endl;
     return 1;
   }
   
