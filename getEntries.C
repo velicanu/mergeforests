@@ -45,7 +45,7 @@ int getEntries(TString fname = "", int onetree = 0)
   // it with the trees from 'fname'.
   const int Ntrees = trees.size();
   for(int i = 0; i < Ntrees; ++i){
-    std::cout<<trees[i]<<": "<<nentries[i]<<std::endl;
+    std::cout<<trees[i]<<": "<<nentries[i]<<" "<<std::endl;
   }
   _file0->Close();
   return 1;
