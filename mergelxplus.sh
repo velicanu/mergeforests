@@ -8,17 +8,22 @@ fi
 
 function checkfile {
 
-fullentries=`$unmergepath/getEntries.exe $1 | grep -v ": 0"` 
+fullentries=`$unmergepath/getEntries.exe $1 | grep -v ": 0 " | grep -v ": 1 "`
 bad=`for i in $fullentries ; do echo $i | grep -v : ; done  | sort | uniq | wc -l`
 
 if [ $bad -gt 1 ]
 then
   echo removing $1
   echo  $fullentries
-  rm $1 
+  echo "############################" >> badfiles.txt
+  echo $1 >> badfiles.txt
+  echo  $fullentries >> badfiles.txt
+  rm $1
 fi
 
 }
+
+
 
 
 
