@@ -53,7 +53,7 @@ mkdir -p $2/
 /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select mkdir -p $3
 
 count=0
-cp ~/git/mergeforests/getEntries.exe $unmergepath/
+cp getEntries.exe $unmergepath/
 # stage all the files locally, delete any that have inconsistent entries
 for i in `cat $1`
 do
