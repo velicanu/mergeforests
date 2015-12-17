@@ -6,17 +6,19 @@
 #include <TFile.h>
 #include <TString.h>
 #include <iostream>
+#include <sstream>
 
 void mergeForest(TString fname = "/mnt/hadoop/cms/store/user/richard/pA_jet20Skim_forest_53x_2013-08-15-0155_unmerged/*.root",
-		 TString outfile="pA_jet20Skim_forest_53x_2013-08-15-0155.root",
-		 bool failOnError = true)
+TString outfile="pA_jet20Skim_forest_53x_2013-08-15-0155.root",
+bool failOnError = true)
 {
   // First, find on of the files within 'fname' and use it to make a
   // list of trees. Unfortunately we have to know in advance at least
   // one of the tree names. hiEvtAnalyzer/HiTree is a safe choice for
   // HiForests. We also assume that every TTree is inside a
   // TDirectoryFile which is in the top level of the root file.
-  TChain *dummyChain = new TChain("hiEvtAnalyzer/HiTree");
+  // TChain *dummyChain = new TChain("hiEvtAnalyzer/HiTree");
+  TChain *dummyChain = new TChain("hltanalysis/HltTree");
   dummyChain->Add(fname);
   TFile *testFile = dummyChain->GetFile();
   TList *topKeyList = testFile->GetListOfKeys();
@@ -66,13 +68,17 @@ void mergeForest(TString fname = "/mnt/hadoop/cms/store/user/richard/pA_jet20Ski
     if(failOnError)
     {
       if(strcmp(trees[i],"HiForest/HiForestVersion") == 0) continue;
+      if(strcmp(trees[i],"tupel/Header") == 0) continue;
+      if(strcmp(trees[i],"tupel/Description") == 0) continue;
+      if(strcmp(trees[i],"tupel/BitFields") == 0) continue;
+      if(strcmp(trees[i],"HiForest/HiForestInfo") == 0) continue;
       if(i == 0) nentries = ch[i]->GetEntries();
       else if (nentries != ch[i]->GetEntries())
       {
-	std::cout << "ERROR: number of entries in this tree does not match." << std::endl;
-	std::cout << "First inconsistent file: " <<ch[i]->GetFile()->GetName()<<std::endl;
-	std::cout << "Exiting. Please check input." << std::endl;
-	return;
+        std::cout << "ERROR: number of entries in this tree does not match." << std::endl;
+        std::cout << "First inconsistent file: " <<ch[i]->GetFile()->GetName()<<std::endl;
+        std::cout << "Exiting. Please check input." << std::endl;
+        return;
       }
     }
     else
@@ -94,9 +100,9 @@ void mergeForest(TString fname = "/mnt/hadoop/cms/store/user/richard/pA_jet20Ski
     else
     {
       if ( dir[i] != dir[i-1] )
-  	file->mkdir(dir[i])->cd();
+      file->mkdir(dir[i])->cd();
       else
-  	file->cd(dir[i]);
+      file->cd(dir[i]);
     }
     ch[i]->Merge(file,0,"keep");
     delete ch[i];
@@ -116,8 +122,12 @@ int main(int argc, char *argv[])
   }
   
   if(argc == 3)
-    mergeForest(argv[1], argv[2]);
+  mergeForest(argv[1], argv[2]);
   else if (argc == 4)
-    mergeForest(argv[1], argv[2], argv[3]);
+  {
+    bool b; 
+    std::istringstream(argv[3]) >> b;
+    mergeForest(argv[1], argv[2], b);
+  }
   return 0;
 }
