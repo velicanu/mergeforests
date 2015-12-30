@@ -72,6 +72,7 @@ bool failOnError = true)
       if(strcmp(trees[i],"tupel/Description") == 0) continue;
       if(strcmp(trees[i],"tupel/BitFields") == 0) continue;
       if(strcmp(trees[i],"HiForest/HiForestInfo") == 0) continue;
+      if(strcmp(trees[i],"runAnalyzer/run") == 0) continue;
       if(i == 0) nentries = ch[i]->GetEntries();
       else if (nentries != ch[i]->GetEntries())
       {
