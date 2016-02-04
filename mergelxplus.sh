@@ -36,6 +36,8 @@ then
   /afs/cern.ch/project/eos/installation/0.3.84-aquamarine/bin/eos.select ls $1 | awk -v inputpath=${1} '{print '"inputpath"'"/"$1}' > ${4}tmppath.txt
   echo Made ${4}tmppath.txt from lfn, rerun with it, looks like 
   head -n2 ${4}tmppath.txt
+  echo
+  echo ./mergelxplus.sh ${4}tmppath.txt $2 $3 $4 $5 $6 $7
   exit 1
 fi
 # if we're not given a unmerged-path , set a default
