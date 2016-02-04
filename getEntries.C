@@ -32,7 +32,7 @@ int getEntries(TString fname = "", int onetree = 0)
       TTree* tree = (TTree*)_file0->Get(treeName);
       if(strcmp(tree->ClassName(), "TTree") != 0 && strcmp(tree->ClassName(), "TNtuple") != 0) continue;
       nentries.push_back(tree->GetEntries());
-
+      //tree->Print();
       trees.push_back(treeName);
       dir.push_back(dFile->GetName());
       if(onetree == 1) break;
